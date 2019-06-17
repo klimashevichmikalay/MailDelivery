@@ -1,35 +1,21 @@
 package model;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
+import log.MyLog;
 
 /**
- * Класс, который содержит все необходимые данные для отправки письма: конечную
- * почту, ФИО для обращения, новую роль в организации, дополнительный текст.
+ * Класс, который содержит все необходимые данные для отправки письма.
  *
  * @author Mikalay
  */
-/**
- * Перечисление всех заголовков таблицы XLSX(Фамилия, Имя, Отчество, Роль,
- * Email, Логин, Пароль).
- */
-enum ExcelRow {
-    SURNAME,
-    NAME,
-    PATRONYMIC,
-    ROLE,
-    EMAIL,
-    LOGIN,
-    PASSWORD
-};
-
 public class MessageInfo {
 
     /**
      * Содержит все значения ячеек данной строки.
      */
-    private Map<ExcelRow, String> row;
+    private final Map<Integer, String> row;
 
     /**
      * Конструктор класса. Инициализируем карту для хранения данных строки -
@@ -46,7 +32,7 @@ public class MessageInfo {
      * @param exrow - тип информации(ФИО, роль, почта и т. д.)
      * @param value - добавляемое значение
      */
-    void setCellValue(ExcelRow exrow, String value) {
+    public void setCellValue(Integer exrow, String value) {
         row.put(exrow, value);
     }
 
@@ -57,7 +43,33 @@ public class MessageInfo {
      * @param exrow - тип информации(ФИО, роль, почта и т. д.)
      * @return строку - значение ячейки
      */
-    String getCellInfo(ExcelRow exrow) {
+    public String getCellInfo(Integer exrow) {
         return row.get(exrow);
+    }
+
+    public String getString() {
+        String res = "";
+        for (int i = 0; i < row.size(); i++) {
+            res += row.get(i) + "\n";
+        }
+        return res;
+    }
+
+    public boolean isHasDublicate() throws IOException {
+
+        for (int i = 0; i < row.size(); i++) {
+            for (int j = i + 1; j < row.size(); j++) {
+                if (row.get(i).equals(row.get(j))) {
+                    MyLog.logMsg("В заголовке таблицы нет одинаковых полей.");
+                    return true;
+                }
+            }
+        }
+        MyLog.logMsg("В заголовке таблицы есть дубликат(ы).");
+        return false;
+    }
+
+    public int getSize() {
+        return row.size();
     }
 }
