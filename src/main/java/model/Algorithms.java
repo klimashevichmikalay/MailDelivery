@@ -32,7 +32,7 @@ public class Algorithms {
     }
 
     String replaceVarTo(String text, String var, String replaceTo) {
-        Pattern pattern = Pattern.compile("<\\s*var\\s*>\\s*" + var + "\\s*<\\s*\\\\\\s*var\\s*>");
+        Pattern pattern = Pattern.compile("<\\s*var\\s*>\\s*" + var + "\\s*<\\s*/s*var\\s*>");
         Matcher m = pattern.matcher(text);
         return (m.replaceAll(replaceTo));
     }
