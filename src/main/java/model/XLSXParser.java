@@ -23,7 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class XLSXParser {
 
     boolean flagHeader = false;
-    MessageInfo header;
+    public static MessageInfo header;
 
     private Iterator<Row> getRowIterator(String path) {
         File myFile = new File(path);

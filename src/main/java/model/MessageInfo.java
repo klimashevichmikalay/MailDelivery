@@ -69,6 +69,18 @@ public class MessageInfo {
         return false;
     }
 
+    public boolean isSizeGood() {
+        if (XLSXParser.header.row.size() != row.size()) {
+            return false;
+        }
+        return true;
+    }
+
+    public String getAt(int i)
+    {
+        return row.get(i);
+    }
+    
     public int getSize() {
         return row.size();
     }
