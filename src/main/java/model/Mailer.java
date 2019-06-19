@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package model;
+//
 
 import java.net.URL;
 import java.util.Arrays;
@@ -23,18 +24,21 @@ public class Mailer {
 //<image></image>    
     public String formMessage(String str) {
 
-        str = str.replaceAll("<\\s*mailLink\\s*>([^<^>]*)<\\s*/\\s*mailLink\\s*>",
+        str = str.replaceAll("<\\s*mailLink\\s*>\\s*([^<^>]*)\\s*<\\s*/\\s*mailLink\\s*>",
                 "<a href=\"mailto:$1\">$1</a>");
 
-        str = str.replaceAll("<\\s*siteLink\\s*>([^<^>]*)<\\s*/\\s*siteLink\\s*>",
+        str = str.replaceAll("<\\s*siteLink\\s*>\\s*([^<^>]*)\\s*<\\s*/\\s*siteLink\\s*>",
                 "<a href = \"$1\">" + "$1</a>");
 
-        str = str.replaceAll("\r\n", "<br/>");
+        str = str.replaceAll("<\\s*image\\s*>\\s*([^<^>]*)\\s*<\\s*/\\s*image\\s*>",
+                "<image>$1</image>");
+
+        str = str.replaceAll("\n", "<br/>");
 
         return str;
     }
 
-    public void Send(String mail) throws Exception {
+    public void send(String mail) throws Exception {
 
         mail = formMessage(mail);
         StringBuffer msg = new StringBuffer();
@@ -50,12 +54,12 @@ public class Mailer {
         HtmlEmail email = new HtmlEmail();
         email.setCharset("utf-8");
         email.setSmtpPort(465);
-        email.setAuthenticator(new DefaultAuthenticator("klimashevich.nicholas@gmail.com", "rJkZ1234"));
+        email.setAuthenticator(new DefaultAuthenticator("klimashevich.mikalay@gmail.com", "rjkz1234"));
         email.setSSLOnConnect(true);
         email.setDebug(false);
         email.setHostName("smtp.gmail.com");
-        email.addTo("klimashevich.mikalay@gmail.com");
-        email.setFrom("klimashevich.nicholas@gmail.com", "Nicholas");//название от кого
+        email.addTo("klimashevich.mikalay@mail.ru");
+        email.setFrom("klimashevich.mikalay@gmail.com", "Nicholas");//название от кого
         email.setSubject("Test email with inline image");//это название сообщения 
 
         mail = mail.replaceAll("<\\s*image\\s*>",
@@ -76,7 +80,8 @@ public class Mailer {
         int countImages = 0;
         for (int i = 0; i < vector.size(); i++) {
             if (i + 1 < vector.size() && vector.get(i).matches("<image>")) {
-                URL url = new URL("file:///" + vector.get(i + 1));
+                String urrr = "file:///" + vector.get(i + 1);
+                URL url = new URL(urrr);
                 String cid = email.embed(url, ("Image" + countImages));
                 msg.append("<img src=\"cid:" + cid + "\">");
                 i++;

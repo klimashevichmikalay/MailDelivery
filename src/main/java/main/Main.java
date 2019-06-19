@@ -6,6 +6,7 @@ import java.util.Vector;
 import model.Mailer;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
+import view.MainWindow;
 
 /**
  * Класс с точкой входа в программy.
@@ -19,6 +20,7 @@ public class Main {
 //ДОКУМЕНТАЦИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!
 //ПРОВЕРКА УСПЕШНОЙ ОТПРАВКИ ПОЧТЫ!!!!!!!!!!!!!!!! 
 //ЗАПУСК БЕЗ ДЖАВА_МАШИНЫ!!!!!!!!!!!!!!!   
+//ПОТОКИ!!!!!!!!!!!!!!!!!    
 //картинки в почту через ссылку    
 //план на сегодня:
 //проверка почты через регулярку
@@ -41,6 +43,9 @@ public class Main {
 //нормальная регулярка для почты    
 //тема письма - отдельное поле
 //от коого письмо - отдельное поле    
+//посмотреть возможные ошибки, проверки файлом на присутствие
+//новые строки в тегах письма 
+//убрать пробелы из тегов    
 
 //////////////////////////////////  
 //<template> </tempate> +        //
@@ -51,23 +56,23 @@ public class Main {
     public static void main(String[] args) throws Exception {
         //   MyLog.logMsg("Начало работы программы.");
         //  testFormMessages();
-        //   MainWindow frame = new MainWindow();
+        MainWindow frame = new MainWindow();
         //  testSend1();
-        String str = "Привет!\r\nЭто мой очередной тест. Ссылка на меня в ВК: "
+        /*    String str = "Привет!\r\nЭто мой очередной тест. Ссылка на меня в ВК: "
                 + "\r\n <siteLink> https://vk.com/klimashevich.mikalay </siteLink>"
                 + "\r\nА это мой гитхаб:\r\n "
                 + "<siteLink>https://github.com/klimashevichmikalay</siteLink>"
                 + "\r\nПришите мне на почту: <mailLink>klimashevich.mikalay@mail.ru</mailLink>"
                 + "\r\nПример пустыни:\r\n"
                 + " <image>C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Desert.jpg</image>"
-                 + "\r\nПустынь много не бывает:\r\n"
+                + "\r\nПустынь много не бывает:\r\n"
                 + "<image>C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Desert.jpg</image>"
                 + "\r\nGood luck!!"
-                 + "\r\nНе могу удержаться.. милаху на последок:"
+                + "\r\nНе могу удержаться.. милаху на последок:"
                 + "<  image  >C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Koala.jpg<  /  image >";
 
         Mailer m = new Mailer();
-        m.Send(str);
+        m.Send(str);*/
 
         //  System.out.println(m.formMessage(str));
     }
