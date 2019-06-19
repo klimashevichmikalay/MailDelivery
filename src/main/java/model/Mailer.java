@@ -6,6 +6,8 @@
 package model;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Vector;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
 
@@ -18,29 +20,28 @@ public class Mailer {
 //image    
 // <siteLink></siteLink>    
 //<mailLink></mailLink>
-//<image><image>    
+//<image></image>    
     public String formMessage(String str) {
 
         str = str.replaceAll("<\\s*mailLink\\s*>([^<^>]*)<\\s*/\\s*mailLink\\s*>",
-                "<a href=\"mailto:$1\"> $1 </a>");
+                "<a href=\"mailto:$1\">$1</a>");
 
         str = str.replaceAll("<\\s*siteLink\\s*>([^<^>]*)<\\s*/\\s*siteLink\\s*>",
-                "<a href = $1>" + " $1 ");
+                "<a href = \"$1\">" + "$1</a>");
 
-        str = str.replaceAll("\r\n",
-                "<br/>");
+        str = str.replaceAll("\r\n", "<br/>");
 
         return str;
     }
 
-    public void SendMail2(String mail) throws Exception {
+    public void Send(String mail) throws Exception {
 
         mail = formMessage(mail);
         StringBuffer msg = new StringBuffer();
         msg.append("<html>");
         msg.append(mail);
         msg.append("</html>");
-        SendMail(mail);
+        SendMail(msg.toString());
 
     }
 
@@ -54,36 +55,42 @@ public class Mailer {
         email.setDebug(false);
         email.setHostName("smtp.gmail.com");
         email.addTo("klimashevich.mikalay@gmail.com");
-        email.setFrom("klimashevich.nicholas@gmail.com", "Nicholas");
-        email.setSubject("Test email with inline image");
-        /*  URL url = new URL("file:///C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg");
-        String cid = email.embed(url, "Apache logo");
+        email.setFrom("klimashevich.nicholas@gmail.com", "Nicholas");//название от кого
+        email.setSubject("Test email with inline image");//это название сообщения 
 
+        mail = mail.replaceAll("<\\s*image\\s*>",
+                "<forSplit><image><forSplit>");
+
+        mail = mail.replaceAll("<\\s*/\\s*image\\s*>",
+                "<forSplit></image><forSplit>");
+
+        String[] ops = mail.split("<forSplit>");
+        Vector<String> vector = new Vector<String>(Arrays.asList(ops));
+
+        //URL url = new URL("file:///C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg");
+//String cid = email.embed(url, "Image");
+//msg.append("<br/>");
+//msg.append("<img src=\"cid:" + cid + "\">");
+//msg.append("<br/>"); 
         StringBuffer msg = new StringBuffer();
-        msg.append("<html>");
-        msg.append("Этот текст должен быть перед изображением!!!!");
-        msg.append("<br/>");
-        msg.append("<img src=\"cid:" + cid + "\">");
-        msg.append("<br/>");
-        msg.append("А этот - после ");
-        msg.append("<br/>");
-        msg.append("<img src=\"cid:" + cid + "\">");
-        msg.append("<br/>");
-        msg.append("Мой гитхаб:");
-        msg.append("<br/>");
-        msg.append("<a href = \"https://github.com/klimashevichmikalay\">");
-        msg.append("https://github.com/klimashevichmikalay");
-        msg.append("</a>");
-        msg.append("<br/>");
-        msg.append("Это ссылка на почту:");
-        msg.append("<br/>");//<a href="mailto:name@email.com">Link text</a>
-        msg.append("<a href=\"mailto:klimashevich.mikalay@mail.ru\">Моя почта</a>");
-        msg.append("<br/>");
-        msg.append("<br/>");
-        msg.append("</html>");
-        //msg.append("<html>");*/
-        email.setHtmlMsg(mail.toString());
+        int countImages = 0;
+        for (int i = 0; i < vector.size(); i++) {
+            if (i + 1 < vector.size() && vector.get(i).matches("<image>")) {
+                URL url = new URL("file:///" + vector.get(i + 1));
+                String cid = email.embed(url, ("Image" + countImages));
+                msg.append("<img src=\"cid:" + cid + "\">");
+                i++;
+                countImages++;
+                continue;
+            }
+            if (vector.get(i).matches("</image>")) {
+                continue;
+            }
+            msg.append(vector.get(i));
+        }
+
+        String str = msg.toString();
+        email.setHtmlMsg(msg.toString());
         email.send();
     }
-
 }

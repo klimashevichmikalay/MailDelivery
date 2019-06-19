@@ -1,6 +1,8 @@
 package main;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Vector;
 import model.Mailer;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
@@ -37,28 +39,36 @@ public class Main {
 //ПОЗВОНИТЬ через веб-агент - для высвечивание перед ссылкой
 //https://www.tutorialspoint.com/html/html_email_links.htm - разные ссылки   
 //нормальная регулярка для почты    
+//тема письма - отдельное поле
+//от коого письмо - отдельное поле    
 
 //////////////////////////////////  
-//<template> </tempate>         //
-//<siteLink></siteLink>       //
-//<mailLink></mailLink>       //
+//<template> </tempate> +        //
+//<siteLink></siteLink> +        //
+//<mailLink></mailLink> +        //
+//<image></image>               //
 ////////////////////////////////// 
     public static void main(String[] args) throws Exception {
         //   MyLog.logMsg("Начало работы программы.");
         //  testFormMessages();
         //   MainWindow frame = new MainWindow();
         //  testSend1();
-        String str = "Hello!\r\nIt is my mail. Link for me: "
+        String str = "Привет!\r\nЭто мой очередной тест. Ссылка на меня в ВК: "
                 + "\r\n <siteLink> https://vk.com/klimashevich.mikalay </siteLink>"
-              + "\r\nlink for my github:\r\n "
+                + "\r\nА это мой гитхаб:\r\n "
                 + "<siteLink>https://github.com/klimashevichmikalay</siteLink>"
-              + "\r\nSend me: <mailLink>klimashevich.mikalay@mail.ru</mailLink>"
-              + "\r\nGood luck!!";
-        
-      Mailer m =  new  Mailer();
-      m.SendMail2(str);
-      
-    //  System.out.println(m.formMessage(str));
+                + "\r\nПришите мне на почту: <mailLink>klimashevich.mikalay@mail.ru</mailLink>"
+                + "\r\nПример пустыни:\r\n"
+                + " <image>C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Desert.jpg</image>"
+                 + "\r\nПустынь много не бывает:\r\n"
+                + "<image>C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Desert.jpg</image>"
+                + "\r\nGood luck!!"
+                 + "\r\nНе могу удержаться.. милаху на последок:"
+                + "<  image  >C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Koala.jpg<  /  image >";
 
-    }    
+        Mailer m = new Mailer();
+        m.Send(str);
+
+        //  System.out.println(m.formMessage(str));
+    }
 }
