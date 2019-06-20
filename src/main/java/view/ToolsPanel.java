@@ -5,13 +5,11 @@
  */
 package view;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,6 +35,11 @@ public class ToolsPanel {
     Encryption encr;
     JPanel panel;
 
+    JLabel llogin;
+    JTextField tlogin;
+    JLabel lpass;
+    JTextField tpass;
+
     JLabel lport;
     JLabel lfrom;
     JLabel ltopic;
@@ -51,7 +54,7 @@ public class ToolsPanel {
     public ToolsPanel() {
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        panel.setLayout(new GridLayout(14, 1, 0, 0));
+        panel.setLayout(new GridLayout(16, 1, 0, 0));
         TitledBorder border = new TitledBorder("Настройки");
         border.setTitleJustification(TitledBorder.CENTER);
         border.setTitlePosition(TitledBorder.TOP);
@@ -94,60 +97,95 @@ public class ToolsPanel {
         panel1.add(logScrollPane);
         mainpanel.add(panel1);
         //mainpanel.add(Box.createRigidArea(new Dimension(0, 5)));
+//начало логина пароля
+        llogin = new JLabel("LOGIN:");
+        tlogin = new JTextField(5);
+        lpass = new JLabel("PASSWORD:");
+        tpass = new JTextField(5);
+        panel.add(llogin);
+        panel.add(tlogin);
+        panel.add(lpass);
+        panel.add(tpass);
+
+//конец логина пароля
 //конец инструкции
 //хост и порт
         lhost = new JLabel("HOST:");
         thost = new JTextField(5);
+
         panel.add(lhost);
+
         panel.add(thost);
         lport = new JLabel("PORT:");
         tport = new JTextField(5);
+
         panel.add(lport);
+
         panel.add(tport);
 //конец хоста  порта        
 //от кого и тема  
         lfrom = new JLabel("Сообщение от:");
         tfrom = new JTextField(5);
+
         panel.add(lfrom);
+
         panel.add(tfrom);
         ltopic = new JLabel("Тема:");
         ttopic = new JTextField(5);
+
         panel.add(ltopic);
+
         panel.add(ttopic);
 //конец от кого и тема
 //начало радиокнопки
         group = new ButtonGroup();
         JRadioButton none = new JRadioButton("Нет шифрования", false);
         JRadioButton ssl = new JRadioButton("SSL-шифрование", true);
-        JRadioButton tsl = new JRadioButton("TSL-шифрование", true);
+        encr = SSL;
+        JRadioButton tsl = new JRadioButton("TSL-шифрование", false);
 
-        none.addActionListener(new ActionListener() {
+        none.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 encr = NOTHING;
             }
-        });
+        }
+        );
 
-        ssl.addActionListener(new ActionListener() {
+        ssl.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 encr = SSL;
             }
-        });
+        }
+        );
 
-        tsl.addActionListener(new ActionListener() {
+        tsl.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 encr = TSL;
             }
-        });
+        }
+        );
 
-        panel.add(new JLabel("Шифрование:"));
+        panel.add(
+                new JLabel("Шифрование:"));
         group.add(none);
+
         group.add(ssl);
+
         group.add(tsl);
+
         panel.add(none);
+
         panel.add(ssl);
+
         panel.add(tsl);
 
         mainpanel.add(panel);
@@ -176,4 +214,13 @@ public class ToolsPanel {
     JPanel getPanel() {
         return this.mainpanel;
     }
+
+    public String getPass() {
+        return this.tpass.getText();
+    }
+
+    public String getLogin() {
+        return this.tlogin.getText();
+    }
+
 }

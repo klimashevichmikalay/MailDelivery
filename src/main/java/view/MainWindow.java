@@ -187,7 +187,7 @@ public class MainWindow {
         System.out.println(str);
 ///
 
-        memo.setMesage("|>Начало рассылки.\n\n");
+        memo.setMesage("\n\n\n|>Начало рассылки.\n\n");
         Mailer mailer = new Mailer();
         int countNull = 0;
         Vector<String> msgsTempl = alg.setTemplates(tableHeader, messages, messageSet.getText());
@@ -199,11 +199,34 @@ public class MainWindow {
                         + "отправить письмо "
                         + "со строки " + (i + 2) + ".\n");
             } else {
-                mailer.send(msgsTempl.get(i));
+
+                String sender = getSender(tableHeader, messages.get(i));
+                if (sender == "") {
+                    memo.setMesage("\nErr: перепроверьте\nнаписание адресата\n"
+                            + "в верху приложения\n"
+                            + "\nэто должно быть имя\n"
+                            + "столбца таблицы");
+                    return;
+                } else {
+                    mailer.send(msgsTempl.get(i), sender, toolspanel);
+                }
             }
 
         }
         memo.setMesage("\n|>Разослано писем:\n" + (msgsTempl.size() - countNull) + "\n");
         memo.setMesage("\n|>Не удалось разослать:\n" + (countNull));
+    }
+
+    String getSender(MessageInfo tableHeader, MessageInfo message) {
+        for (int i = 0; i < tableHeader.getSize(); i++) {
+            if (tableHeader.getAt(i).equals(addressee.getText())) {
+                return message.getAt(i);
+            }
+        }
+        return "";
+    }
+
+    public String getAddressee() {
+        return this.addressee.getText();
     }
 }

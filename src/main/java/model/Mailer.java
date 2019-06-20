@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.Vector;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
+import view.MainWindow;
+import view.ToolsPanel;
+import static view.ToolsPanel.Encryption.SSL;
+import static view.ToolsPanel.Encryption.TSL;
 
 /**
  *
@@ -38,29 +42,37 @@ public class Mailer {
         return str;
     }
 
-    public void send(String mail) throws Exception {
+    public void send(String mail, String sender, ToolsPanel tp) throws Exception {
 
         mail = formMessage(mail);
         StringBuffer msg = new StringBuffer();
         msg.append("<html>");
         msg.append(mail);
         msg.append("</html>");
-        SendMail(msg.toString());
+        SendMail(msg.toString(), sender, tp);
 
     }
 
-    public static void SendMail(String mail) throws Exception {
+    public static void SendMail(String mail, String sender, ToolsPanel tp) throws Exception {
 
         HtmlEmail email = new HtmlEmail();
         email.setCharset("utf-8");
-        email.setSmtpPort(465);
-        email.setAuthenticator(new DefaultAuthenticator("klimashevich.mikalay@gmail.com", "rjkz1234"));
-        email.setSSLOnConnect(true);
+        email.setSmtpPort(tp.getPort());
+        email.setAuthenticator(new DefaultAuthenticator(tp.getLogin(), tp.getPass()));
+
+        if (tp.getEncryption() == SSL) {
+            email.setSSLOnConnect(true);
+        }
+
+        if (tp.getEncryption() == TSL) {
+            email.setStartTLSEnabled(true);
+            email.setStartTLSRequired(true);
+        }
         email.setDebug(false);
-        email.setHostName("smtp.gmail.com");
-        email.addTo("klimashevich.mikalay@mail.ru");
-        email.setFrom("klimashevich.mikalay@gmail.com", "Nicholas");//название от кого
-        email.setSubject("Test email with inline image");//это название сообщения 
+        email.setHostName(tp.getHost());
+        email.addTo(sender);
+        email.setFrom(tp.getLogin(), tp.getFrom());//название от кого
+        email.setSubject(tp.getTopic());//это название сообщения 
 
         mail = mail.replaceAll("<\\s*image\\s*>",
                 "<forSplit><image><forSplit>");
@@ -71,11 +83,6 @@ public class Mailer {
         String[] ops = mail.split("<forSplit>");
         Vector<String> vector = new Vector<String>(Arrays.asList(ops));
 
-        //URL url = new URL("file:///C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg");
-//String cid = email.embed(url, "Image");
-//msg.append("<br/>");
-//msg.append("<img src=\"cid:" + cid + "\">");
-//msg.append("<br/>"); 
         StringBuffer msg = new StringBuffer();
         int countImages = 0;
         for (int i = 0; i < vector.size(); i++) {
@@ -94,7 +101,6 @@ public class Mailer {
             msg.append(vector.get(i));
         }
 
-        String str = msg.toString();
         email.setHtmlMsg(msg.toString());
         email.send();
     }
