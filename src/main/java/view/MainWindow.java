@@ -162,7 +162,7 @@ public class MainWindow {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        MessageInfo tableHeader = pars.getHeader();
+        MessageInfo tableHeader = pars.header;
 
         try {
             if (tableHeader.isHasDublicate()) {

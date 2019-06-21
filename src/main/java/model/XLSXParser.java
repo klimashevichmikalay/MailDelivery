@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import log.MyLog;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -22,35 +20,63 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class XLSXParser {
 
-    boolean flagHeader = false;
+    /**
+     * Булева переменная, равна истине, если заголовок был уже считан, ложь,
+     * если еще нет.
+     */
+    private boolean flagHeader = false;
+
+    /**
+     * Заголовок таблицы.
+     */
     public static MessageInfo header;
 
+    /**
+     * Возвращает итератор для просмотра строк таблицы.
+     *
+     * @param path - путь файла для рассылки
+     * @return итератор на первую строку
+     */
     private Iterator<Row> getRowIterator(String path) {
+
         File myFile = new File(path);
         FileInputStream fis = null;
+
         try {
+
             fis = new FileInputStream(myFile);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(XLSXParser.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         XSSFWorkbook myWorkBook = null;
         try {
+
             myWorkBook = new XSSFWorkbook(fis);
         } catch (IOException ex) {
-            Logger.getLogger(XLSXParser.class.getName()).log(Level.SEVERE, null, ex);
+
         }
+
         XSSFSheet mySheet = myWorkBook.getSheetAt(0);
         Iterator<Row> rowIterator = mySheet.iterator();
 
         return rowIterator;
     }
 
+    /**
+     * Формирует объект MessageInfo из строки таблицы, объект содержит данные
+     * строки.
+     *
+     * @param row - строка
+     * @return объект со значениями ячейки строки
+     */
     private MessageInfo getMessageInfo(Row row) {
 
         Iterator<Cell> cellIterator = row.cellIterator();
         int count = 0;
+
         MessageInfo mi = new MessageInfo();
+
         while (cellIterator.hasNext()) {
 
             Cell cell = cellIterator.next();
@@ -61,12 +87,22 @@ public class XLSXParser {
                     break;
                 default:
             }
+
             count++;
         }
         return mi;
     }
 
+    /**
+     * Формирует массив объектов MessageInfo из строк таблицы, объекты содержат
+     * данные строк. Так же тут сохраняется отдельно заголовок.
+     *
+     * @param path - путь к XLSX - файлу
+     * @return массив объектов со значениями ячейки строки
+     * @throws java.io.IOException исключение при работе с файлом по пути path
+     */
     public Vector<MessageInfo> getMessages(String path) throws IOException {
+
         MyLog.logMsg("Начинаем формировать таблицу.");
         Vector<MessageInfo> messages = new Vector<>(0);
         Iterator<Row> rowIterator = getRowIterator(path);
@@ -84,9 +120,5 @@ public class XLSXParser {
         flagHeader = false;
         MyLog.logMsg("Таблица сформирована.");
         return messages;
-    }
-
-    public MessageInfo getHeader() {
-        return this.header;
     }
 }
