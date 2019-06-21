@@ -1,12 +1,13 @@
 package model;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import log.MyLog;
 
 /**
- * Класс, который содержит все необходимые данные для отправки письма.
+ * Класс, объекты которого хранят значения ячеек строки.
  *
  * @author Mikalay
  */
@@ -36,13 +37,12 @@ public class MessageInfo {
         row.put(exrow, value);
     }
 
-    /**
-     * Получить значение ячейки из этой строки по типу этой ячейки(ФИО, роль или
-     * другой тип).
-     *
-     * @param exrow - тип информации(ФИО, роль, почта и т. д.)
-     * @return строку - значение ячейки
-     */
+  
+    public Map<Integer, String> getMap()
+    {
+        return Collections.unmodifiableMap(this.row);
+    }
+    
     public String getCellInfo(Integer exrow) {
         return row.get(exrow);
     }

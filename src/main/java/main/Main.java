@@ -1,27 +1,30 @@
 package main;
 
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Vector;
-import model.Mailer;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.HtmlEmail;
 import view.MainWindow;
 
 /**
- * Класс с точкой входа в программy.
+ * Класс с точкой входа в программу.
  *
  * @author Mikalay
+ * @version 1.0
  */
 public class Main {
-//ДОСТАВИЛАСЬ ЛИ ПОЧТА???????!!!!!    
+//КОММЕНТАРИИ К КОНСТАНТам    
+//СООБЩЕНИЕ О НЕУДАЧНОЙ ПЕРЕДАЧИ СООБЩЕНИЯ    
+//ЛОГ ВСЕГО И СООБЩЕНИЕ    
+//РЕФАКТОРИНГ!!!!!!!!!!!!!!!!!!!!!!!!! 
+//ИСКЛЮЧЕНИЯ!!!!!    
+//БАЗОВЫЕ СТАНДАРТНЫЕ ПОЛЯ ЗАПОЛНИТЬ!!!!! и убрать проверку размера   
+//ОТЧЕСТВА МОЖЕТ НЕ БЫТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
+//ДОСТАВИЛАСЬ ЛИ ПОЧТА???????!!!!! и сколько не доставилось? число 
 //ТЕСТЫ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-//ВИД - МОДЕЛЬ MVC!!!!!!!!  
-//РЕФАКТОРИНГ!!!!!!!!!!!!!!!!!!!!!!!!!    
+//ВИД - МОДЕЛЬ MVC!!!!!!!!
 //ДОКУМЕНТАЦИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!
 //ПРОВЕРКА УСПЕШНОЙ ОТПРАВКИ ПОЧТЫ!!!!!!!!!!!!!!!! 
 //ЗАПУСК БЕЗ ДЖАВА_МАШИНЫ!!!!!!!!!!!!!!!   
-//ПОТОКИ!!!!!!!!!!!!!!!!!    
+//ПОТОКИ!!!!!!!!!!!!!!!!! 
+    
+//все исключения заносить в лог, все исключения растаскать по блокам
 //картинки в почту через ссылку    
 //план на сегодня:
 //проверка почты через регулярку
@@ -51,28 +54,7 @@ public class Main {
 //проверить равенство обработанных сообщений и объектных(сравнить количество)    
 //удалить пробелы из логина и пароля при  взятии текста из приложения и при взятии из таблицы
 //при невозможности подключиться к серверу сказать об этом и записать в лог    
-
-    public static void main(String[] args) throws Exception {
-        //   MyLog.logMsg("Начало работы программы.");
-        //  testFormMessages();
-        MainWindow frame = new MainWindow();
-        //  testSend1();
-        /*    String str = "Привет!\r\nЭто мой очередной тест. Ссылка на меня в ВК: "
-                + "\r\n <siteLink> https://vk.com/klimashevich.mikalay </siteLink>"
-                + "\r\nА это мой гитхаб:\r\n "
-                + "<siteLink>https://github.com/klimashevichmikalay</siteLink>"
-                + "\r\nПришите мне на почту: <mailLink>klimashevich.mikalay@mail.ru</mailLink>"
-                + "\r\nПример пустыни:\r\n"
-                + " <image>C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Desert.jpg</image>"
-                + "\r\nПустынь много не бывает:\r\n"
-                + "<image>C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Desert.jpg</image>"
-                + "\r\nGood luck!!"
-                + "\r\nНе могу удержаться.. милаху на последок:"
-                + "<  image  >C:\\\\Users\\\\Public\\\\Pictures\\\\Sample Pictures\\\\Koala.jpg<  /  image >";
-
-        Mailer m = new Mailer();
-        m.Send(str);*/
-
-        //  System.out.println(m.formMessage(str));
+    public static void main(String[] args) {
+        new MainWindow();
     }
 }

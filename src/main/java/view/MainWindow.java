@@ -104,7 +104,7 @@ public class MainWindow {
             contentPane.add(toolspanel.getPanel(), BorderLayout.WEST);
 
             // frame.pack();
-            frame.setSize(700, 600);
+            frame.setSize(800, 720);
             frame.setVisible(true);
 
             MyLog.logMsg("Представление инициализировано.");
