@@ -241,12 +241,21 @@ public class ToolsPanel {
     }
 
     /**
-     * Получить тему письма.
+     * Получить порт как число.
      *
      * @return тему письма
      */
     public int getPort() {
         return Integer.parseInt(tport.getText());
+    }
+    
+    /**
+     * Получить порт как строку.
+     *
+     * @return тему письма
+     */
+    public String getPortString() {
+        return tport.getText();
     }
 
     /**

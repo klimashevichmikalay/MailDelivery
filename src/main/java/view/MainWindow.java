@@ -101,7 +101,7 @@ public class MainWindow {
     /**
      * Установка контроллера.
      *
-     * @param controller - контроллер    
+     * @param controller - контроллер
      */
     public void setController(Controller controller) {
 

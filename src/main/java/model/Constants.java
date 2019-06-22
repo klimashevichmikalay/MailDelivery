@@ -91,5 +91,4 @@ public class Constants {
      * тегами.
      */
     final public static String SPLIT_TAG = "<forSplit>";
-
 }

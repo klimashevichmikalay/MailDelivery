@@ -6,6 +6,6 @@ package model;
  * @author Mikalay
  */
 public enum Encryption {
-    NOTHING, SSL, TSL
 
+    NOTHING, SSL, TSL
 }

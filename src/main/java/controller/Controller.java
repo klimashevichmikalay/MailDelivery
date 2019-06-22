@@ -4,10 +4,7 @@ import algorithms.XLSXParser;
 import algorithms.Algorithms;
 import java.io.IOException;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.MessageInfo;
-import view.MainWindow;
 import view.ToolsBar;
 import view.ToolsPanel;
 import view.WorkingArea;
@@ -23,6 +20,8 @@ public class Controller {
      * Класс обертка с алгоритмами обработки строк.
      */
     private final Algorithms alg;
+    private final XLSXParser pars;
+    private final Mailer mailer;
 
     /**
      * Конструктор.
@@ -30,6 +29,8 @@ public class Controller {
     public Controller() {
 
         alg = new Algorithms();
+        pars = new XLSXParser();
+        mailer = new Mailer();
     }
 
     /**
@@ -49,18 +50,15 @@ public class Controller {
             ToolsPanel toolspanel) throws Exception {
 
         String file = toolsbar.getFile();
+        if ("".equals(file)) {
+
+            memo.setMesage("|>Не выбран файл с \nданными для рассылки.\n\n");
+            return;
+        }
         file = file.replace("\\", "\\\\");
 
-        XLSXParser pars = new XLSXParser();
-        Vector<MessageInfo> messages = null;
-        try {
-            messages = pars.getMessages(file);
-
-        } catch (IOException ex) {
-            Logger.getLogger(MainWindow.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        MessageInfo tableHeader = pars.header;
+        Vector<MessageInfo> messages = pars.getMessages(file);
+        MessageInfo tableHeader = XLSXParser.header;
 
         if (!checkAllFields(
                 memo,
@@ -70,33 +68,27 @@ public class Controller {
                 tableHeader)) {
             return;
         }
+
         memo.setMesage("\n\n\n|>Начало рассылки.\n\n");
-        Mailer mailer = new Mailer();
-        int countNull = 0;
+
         Vector<String> msgsTempl = alg.setTemplates(tableHeader, messages, messageSet.getText());
+
         for (int i = 0; i < msgsTempl.size(); i++) {
 
             if (msgsTempl.get(i) == null) {
-                countNull++;
+
                 memo.setMesage("Err: не удалось\n"
                         + "отправить письмо "
                         + "со строки " + (i + 2) + ".\n");
-            } else {
+                continue;
+            }
 
-                String sender = getSender(tableHeader, messages.get(i), toolsbar);
-                if ("".equals(sender)) {
-                    memo.setMesage("\nErr: перепроверьте\nнаписание адресата\n"
-                            + "в верху приложения\n"
-                            + "\nэто должно быть имя\n"
-                            + "столбца таблицы");
-                    return;
-                } else {
-                    mailer.send(msgsTempl.get(i), sender, toolspanel);
-                }
+            String sender = getSender(tableHeader, messages.get(i), toolsbar);
+            if (!"".equals(sender)) {
+
+                mailer.send(msgsTempl.get(i), sender, toolspanel);
             }
         }
-        memo.setMesage("\n|>Разослано писем:\n" + (msgsTempl.size() - countNull) + "\n");
-        memo.setMesage("\n|>Не удалось разослать:\n" + (countNull));
     }
 
     /**
@@ -116,25 +108,48 @@ public class Controller {
             ToolsBar toolsbar,
             MessageInfo tableHeader) throws IOException {
 
-        if ("".equals(toolsbar.getFile())) {
-            memo.setMesage("|>Не выбран файл с \nданными для рассылки.\nРассылка не удалась.\n\n");
-            return false;
-        }
-
         if (tableHeader.isHasDublicate()) {
-            memo.setMesage("|>В заголовках \nтаблицы есть дубликаты.\nРассылка не удалась.\n\n");
+
+            memo.setMesage("|>В заголовках \nтаблицы есть дубликаты.\n\n");
             return false;
         }
 
         if ("".equals(toolsbar.getAddressee())) {
+
             memo.setMesage("|>Необходимо ввести\nадресата.\n\n");
             return false;
         }
 
         if ("".equals(messageSet.getText())) {
+
             memo.setMesage("|>Необходимо ввести\nписьмо.\n\n");
             return false;
         }
+
+        if ("".equals(toolspanel.getLogin())) {
+
+            memo.setMesage("|>Необходимо ввести\nлогин.\n\n");
+            return false;
+        }
+
+        if ("".equals(toolspanel.getPass())) {
+
+            memo.setMesage("|>Необходимо ввести\nпароль.\n\n");
+            return false;
+        }
+
+        if ("".equals(toolspanel.getHost())) {
+
+            memo.setMesage("|>Необходимо ввести\nхост.\n\n");
+            return false;
+        }
+
+        if ("".equals(toolspanel.getPortString())) {
+
+            memo.setMesage("|>Необходимо ввести\nпорт.\n\n");
+            return false;
+        }
+
         return true;
     }
 
