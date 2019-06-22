@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
+import model.Encryption;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 
 import javax.swing.ButtonGroup;
@@ -18,39 +13,101 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import static view.ToolsPanel.Encryption.NOTHING;
-import static view.ToolsPanel.Encryption.SSL;
-import static view.ToolsPanel.Encryption.TSL;
+import static model.Encryption.NOTHING;
+import static model.Encryption.SSL;
+import static model.Encryption.TSL;
 
 /**
+ * Класс с настройками соеденения с сервером: хост, порт, шифрование.
  *
  * @author Mikalay
  */
 public class ToolsPanel {
 
-    public enum Encryption {
-        NOTHING, SSL, TSL
-    };
+    /**
+     * Тип шифрования, выбираемый в радиобаттон. По умолчанию - SSL.
+     */
+    private Encryption encr;
 
-    Encryption encr;
-    JPanel panel;
+    /**
+     * Панель для инструкции.
+     */
+    private final JPanel panel;
 
-    JLabel llogin;
-    JTextField tlogin;
-    JLabel lpass;
-    JTextField tpass;
+    /**
+     * Поле для обозначения, где вводить логин.
+     */
+    private final JLabel llogin;
 
-    JLabel lport;
-    JLabel lfrom;
-    JLabel ltopic;
-    JLabel lhost;
-    JTextField thost;
-    JTextField tport;
-    JTextField tfrom;
-    JTextField ttopic;
-    ButtonGroup group;
-    JPanel mainpanel;
+    /**
+     * Поле для ввода логина.
+     */
+    private final JTextField tlogin;
 
+    /**
+     * Поле для обозначения, где вводить пароль.
+     */
+    private final JLabel lpass;
+
+    /**
+     * Поле для ввода пароля.
+     */
+    private final JTextField tpass;
+
+    /**
+     * Поле для обозначения, где вводить порт.
+     */
+    private final JLabel lport;
+
+    /**
+     * Поле для обозначения, где вводить отправителя.
+     */
+    private final JLabel lfrom;
+
+    /**
+     * Поле для обозначения, где вводить тему письма.
+     */
+    private final JLabel ltopic;
+
+    /**
+     * Поле для обозначения, где вводить хост.
+     */
+    private final JLabel lhost;
+
+    /**
+     * Поле для ввода обозначения, где вводить хост.
+     */
+    private final JTextField thost;
+
+    /**
+     * Поле для ввода обозначения, где вводить порт.
+     */
+    private final JTextField tport;
+
+    /**
+     * Поле для ввода обозначения, где вводить отправителя.
+     */
+    private final JTextField tfrom;
+
+    /**
+     * Поле для ввода темы письма.
+     */
+    private final JTextField ttopic;
+
+    /**
+     * Кнопки для выбора шифрования.
+     */
+    private final ButtonGroup group;
+
+    /**
+     * Главная панель для компонентов.
+     */
+    private final JPanel mainpanel;
+
+    /**
+     * Конструктор - инициализирует все компоненты.
+     *
+     */
     public ToolsPanel() {
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -96,7 +153,7 @@ public class ToolsPanel {
         panel1.setBorder(border1);
         panel1.add(logScrollPane);
         mainpanel.add(panel1);
-        //mainpanel.add(Box.createRigidArea(new Dimension(0, 5)));
+//mainpanel.add(Box.createRigidArea(new Dimension(0, 5)));
 //начало логина пароля
         llogin = new JLabel("LOGIN:");
         tlogin = new JTextField(5);
@@ -106,35 +163,26 @@ public class ToolsPanel {
         panel.add(tlogin);
         panel.add(lpass);
         panel.add(tpass);
-
 //конец логина пароля
 //конец инструкции
 //хост и порт
         lhost = new JLabel("HOST:");
         thost = new JTextField(5);
-
         panel.add(lhost);
-
         panel.add(thost);
         lport = new JLabel("PORT:");
         tport = new JTextField(5);
-
         panel.add(lport);
-
         panel.add(tport);
 //конец хоста  порта        
 //от кого и тема  
         lfrom = new JLabel("Сообщение от:");
         tfrom = new JTextField(5);
-
         panel.add(lfrom);
-
         panel.add(tfrom);
         ltopic = new JLabel("Тема:");
         ttopic = new JTextField(5);
-
         panel.add(ltopic);
-
         panel.add(ttopic);
 //конец от кого и тема
 //начало радиокнопки
@@ -144,83 +192,96 @@ public class ToolsPanel {
         encr = SSL;
         JRadioButton tsl = new JRadioButton("TSL-шифрование", false);
 
-        none.addActionListener(
-                new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e
-            ) {
-                encr = NOTHING;
-            }
-        }
-        );
+        none.addActionListener((ActionEvent e) -> {
+            encr = NOTHING;
+        });
 
-        ssl.addActionListener(
-                new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e
-            ) {
-                encr = SSL;
-            }
-        }
-        );
+        ssl.addActionListener((ActionEvent e) -> {
+            encr = SSL;
+        });
 
-        tsl.addActionListener(
-                new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e
-            ) {
-                encr = TSL;
-            }
-        }
-        );
-
-        panel.add(
-                new JLabel("Шифрование:"));
+        tsl.addActionListener((ActionEvent e) -> {
+            encr = TSL;
+        });
+        panel.add(new JLabel("Шифрование:"));
         group.add(none);
-
         group.add(ssl);
-
         group.add(tsl);
-
         panel.add(none);
-
         panel.add(ssl);
-
         panel.add(tsl);
-
         mainpanel.add(panel);
     }
 
+    /**
+     * Получить выбранное шифрование сервера.
+     *
+     * @return тип штфрования
+     */
     public Encryption getEncryption() {
         return this.encr;
     }
 
+    /**
+     * Получить имя отправителя(это ваше имя).
+     *
+     * @return имя отправителя
+     */
     public String getFrom() {
         return tfrom.getText();
     }
 
+    /**
+     * Получить тему письма.
+     *
+     * @return тему письма
+     */
     public String getTopic() {
         return ttopic.getText();
     }
 
+    /**
+     * Получить тему письма.
+     *
+     * @return тему письма
+     */
     public int getPort() {
         return Integer.parseInt(tport.getText());
     }
 
+    /**
+     * Получить хост.
+     *
+     * @return хост сервера
+     */
     public String getHost() {
         return thost.getText();
     }
 
+    /**
+     * Получить панель с компонентами.
+     *
+     * @return главная панель управления
+     */
     JPanel getPanel() {
         return this.mainpanel;
     }
 
+    /**
+     * Получить введенный пароль.
+     *
+     * @return пароль для авторизации
+     */
     public String getPass() {
         return this.tpass.getText();
     }
 
+    /**
+     * Получить логин.
+     *
+     * @return логин для авторизации
+     */
     public String getLogin() {
         return this.tlogin.getText();
     }
-
 }

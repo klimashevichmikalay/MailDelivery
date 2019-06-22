@@ -10,7 +10,7 @@ public class Constants {
     /**
      * Путь к файлам с лог-файлом лога.
      */
-    public static final String LOG_FILE_PATH = "log/log.txt";
+    public static final String LOG_FILE_PATH = "log/log";
 
     /**
      * Название папки с логом.

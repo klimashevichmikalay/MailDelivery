@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -13,15 +12,36 @@ import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
 /**
+ * Класс для представления текстового поля для ввода письма или вывода сообщений
+ * от приложений.
  *
  * @author Mikalay
  */
 public class WorkingArea {
 
-    JPanel panel;
-    JTextArea area;
-    JButton clearArea;
+    /**
+     * Панель, на которой располагаются компонены: текстовое поле и кнопка
+     * очистки этого поля.
+     */
+    private final JPanel panel;
 
+    /**
+     * Текстовое поле для ввода письма или вывода сообщений приложения.
+     */
+    private JTextArea area;
+
+    /**
+     * Кнопка очистки текстового поля.
+     */
+    private final JButton clearArea;
+
+    /**
+     * Конструктор для инициализации и размещения компонентов поля.
+     *
+     * @param title - заголовок компонента - панели
+     * @param isEditable - булева переменная, при истинности текстовое поле
+     * панели можно редактировать, при ложности - нельзя
+     */
     WorkingArea(String title, boolean isEditable) {
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -33,13 +53,8 @@ public class WorkingArea {
         JScrollPane logScrollPane = new JScrollPane(area);
         panel.add(logScrollPane);
         clearArea = new JButton("Очистить все");
-        clearArea.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                area.setText("");
-            }
-
+        clearArea.addActionListener((ActionEvent e) -> {
+            area.setText("");
         });
         clearArea.setAlignmentX(0.5f);
 
@@ -63,10 +78,20 @@ public class WorkingArea {
         area.append("\n" + message);
     }
 
+    /**
+     * Возвращает текст из текстового поля.
+     *
+     * @return текст JTextArea area
+     */
     public String getText() {
         return area.getText();
     }
 
+    /**
+     * Возвращает панель с компонентами.
+     *
+     * @return панель с компонентами
+     */
     JPanel getPanel() {
         return this.panel;
     }

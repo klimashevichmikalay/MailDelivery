@@ -1,5 +1,6 @@
 package main;
 
+import controller.Controller;
 import view.MainWindow;
 
 /**
@@ -9,8 +10,10 @@ import view.MainWindow;
  * @version 1.0
  */
 public class Main {
+//необходимость ввести хоть что-то!?    
 //isSizeGood() - УБРАТЬ!!!
-//УДАЛИТЬ ПРОБЕЛЫ И ТАБУЛЯЦИЮ    
+//УДАЛИТЬ ПРОБЕЛЫ И ТАБУЛЯЦИЮ 
+//ПЕРЕСМОТР СООБЩЕНИЙ ЛОГА И ИНТЕРФЕЙСА    
 //КОММЕНТАРИИ К КОНСТАНТам    
 //СООБЩЕНИЕ О НЕУДАЧНОЙ ПЕРЕДАЧИ СООБЩЕНИЯ    
 //ЛОГ ВСЕГО И СООБЩЕНИЕ    
@@ -26,6 +29,7 @@ public class Main {
 //ЗАПУСК БЕЗ ДЖАВА_МАШИНЫ!!!!!!!!!!!!!!!   
 //ПОТОКИ!!!!!!!!!!!!!!!!! 
 
+//Если я не ввел порт??    
 //все исключения заносить в лог, все исключения растаскать по блокам
 //картинки в почту через ссылку    
 //план на сегодня:
@@ -58,6 +62,8 @@ public class Main {
 //при невозможности подключиться к серверу сказать об этом и записать в лог    
 //переместить header в messageInfo как static    
     public static void main(String[] args) {
-        new MainWindow();
+
+        MainWindow mw = new MainWindow();
+        mw.setController(new Controller());
     }
 }

@@ -1,5 +1,6 @@
 package model;
 
+import algorithms.XLSXParser;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +61,7 @@ public class MessageInfo {
     /**
      * Возврат содержимого ячейки строки.
      *
-     * @param exrow - номер столбца
+     * @param exrow  номер столбца
      * @return карта со значениями ячеек строки, хранящейся в объекте и номерами
      * столбцов в качестве ключей
      */

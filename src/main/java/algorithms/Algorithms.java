@@ -1,4 +1,4 @@
-package model;
+package algorithms;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import model.MessageInfo;
 import static model.Constants.END_IMAGE_REGEX;
 import static model.Constants.END_IMAGE_WITH_SPLIT_REGEX;
 import static model.Constants.END_VAR_REGEX;
@@ -41,7 +42,7 @@ public class Algorithms {
      * @param tableHeader заголовок таблицы
      * @param messages значения ячеек строк для формирования писем
      * @param letterText текст письма для отправки
-     * @return - вектор строк-писем с замененными переменными на соответствующие
+     * @return  вектор строк-писем с замененными переменными на соответствующие
      * в строке для каждого письма
      */
     public Vector<String> setTemplates(

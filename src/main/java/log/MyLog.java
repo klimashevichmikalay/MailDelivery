@@ -24,7 +24,7 @@ public class MyLog {
      * Запись в лог события, связанного с работой с таблицей.
      *
      * @param msg сообщение, записываемое в лог файл
-     * @throws java.io.IOException - исключение при неудаче записи в лог нового
+     * @throws java.io.IOException  исключение при неудаче записи в лог нового
      * сообщения.
      */
     public static void logMsg(String msg) throws IOException {

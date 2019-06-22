@@ -1,12 +1,13 @@
-package model;
+package controller;
 
+import algorithms.Algorithms;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import view.ToolsPanel;
-import view.ToolsPanel.Encryption;
-import static view.ToolsPanel.Encryption.SSL;
-import static view.ToolsPanel.Encryption.TSL;
+import model.Encryption;
+import static model.Encryption.SSL;
+import static model.Encryption.TSL;
 
 /**
  * Класс для отправления письма на сервер.
