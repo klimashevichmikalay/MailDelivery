@@ -21,7 +21,6 @@ public class Controller {
      */
     private final Algorithms alg;
     private final XLSXParser pars;
-    private final Mailer mailer;
 
     /**
      * Конструктор.
@@ -30,7 +29,6 @@ public class Controller {
 
         alg = new Algorithms();
         pars = new XLSXParser();
-        mailer = new Mailer();
     }
 
     /**
@@ -69,7 +67,7 @@ public class Controller {
             return;
         }
 
-        memo.setMesage("\n\n\n|>Начало рассылки.\n\n");
+        memo.setMesage("\n|>Начало рассылки.\n");
 
         Vector<String> msgsTempl = alg.setTemplates(
                 tableHeader, messages,
@@ -80,23 +78,26 @@ public class Controller {
 
             if (msgsTempl.get(i) == null) {
 
-                memo.setMesage("Err: не удалось\n"
-                        + "отправить письмо "
-                        + "со строки " + (i + 2) + ".\n" + "Т. к. введены\n"
+                memo.setMesage("Err: не будет\n"
+                        + "отправлено письмо"
+                        + " со строки " + (i + 2) + ".\n" + "Т. к. введены\n"
                         + "не все обязательные\n"
                         + "поля.\n");
                 continue;
             }
             String sender = getSender(tableHeader, messages.get(i), toolsbar);
             if ("".equals(sender)) {
-                memo.setMesage("Err: не удалось\n"
-                        + "отправить письмо.\n"
+                memo.setMesage("Err: не будет\n"
+                        + "отправлено письмо.\n"
+                        + "со строки " + (i + 2) + ".\n"
                         + "Т. к. столбца с именем\n"
                         + "адресата нет в\n"
                         + "таблице.");
-                return;
+                continue;
             }
-            mailer.send(msgsTempl.get(i), sender, toolspanel);
+
+            Runnable m = new Mailer(msgsTempl.get(i), sender, toolspanel, memo, i + 2);
+            new Thread(m).start();
         }
     }
 

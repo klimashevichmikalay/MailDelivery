@@ -89,6 +89,23 @@ public class XLSXParser {
                 case Cell.CELL_TYPE_STRING:
                     mi.setCellValue(count, cell.getStringCellValue());
                     break;
+
+                case Cell.CELL_TYPE_NUMERIC:
+                    mi.setCellValue(count, String.valueOf(cell.getNumericCellValue()));
+                    break;
+
+                case Cell.CELL_TYPE_BOOLEAN: {
+
+                    if (cell.getBooleanCellValue()) {
+                        mi.setCellValue(count, "true");
+                    }
+
+                    if (!cell.getBooleanCellValue()) {
+                        mi.setCellValue(count, "false");
+                    }
+                }
+                break;
+
                 default:
             }
 

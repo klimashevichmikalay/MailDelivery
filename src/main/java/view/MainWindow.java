@@ -30,7 +30,7 @@ public class MainWindow {
     /**
      * Поле вывода сообщений по ходу отправки.
      */
-    private WorkingArea memo;
+    volatile private WorkingArea memo;
 
     /**
      * Панель настройки соединения: шифрования, хост, порт, логин и пароль и т.
@@ -95,7 +95,7 @@ public class MainWindow {
         });
 
         toolspanel = new ToolsPanel();
-        toolsbar = new ToolsBar();       
+        toolsbar = new ToolsBar();
 
         //content.add(tabbedPane, BorderLayout.CENTER);
         JPanel mailPanel = new JPanel();
@@ -105,7 +105,7 @@ public class MainWindow {
         tabbedPane.addTab("Ввод письма", mailPanel);
 
         JPanel tools = new JPanel();
-        mailPanel.setLayout(new GridLayout(1, 2, 0, 0));       
+        mailPanel.setLayout(new GridLayout(1, 2, 0, 0));
         tabbedPane.addTab("Настройки", toolspanel.getPanel());
 
         Container contentPane = frame.getContentPane();

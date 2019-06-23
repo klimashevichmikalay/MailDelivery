@@ -1,6 +1,7 @@
 package controller;
 
 import algorithms.Algorithms;
+import java.net.MalformedURLException;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
@@ -8,6 +9,7 @@ import view.ToolsPanel;
 import model.Encryption;
 import static model.Encryption.SSL;
 import static model.Encryption.TSL;
+import view.WorkingArea;
 
 /**
  * Класс для отправления письма на сервер.
@@ -15,7 +17,26 @@ import static model.Encryption.TSL;
  * @author Mikalay
  * @version 1.0
  */
-public class Mailer {
+public class Mailer implements Runnable {
+
+    private final String message;
+    private final String recipient;
+    private final ToolsPanel mailingSetup;
+    private final WorkingArea memo;
+    private final int line;
+
+    public Mailer(String _message,
+            String _recipient,
+            ToolsPanel _mailingSetup,
+            WorkingArea _memo,
+            int _line) {
+
+        this.message = _message;
+        this.recipient = _recipient;
+        this.mailingSetup = _mailingSetup;
+        this.memo = _memo;
+        this.line = _line;
+    }
 
     /**
      * Установка шифрования по выбору пользователя на панели управления.
@@ -62,20 +83,35 @@ public class Mailer {
         return email;
     }
 
-    /**
-     * Отправка сообщения на сервер.
-     *
-     * @param message текст для отправки
-     * @param recipient получатель
-     * @param mailingSetup панель управления отправки сообщения
-     */
-    public void send(String message,
-            String recipient,
-            ToolsPanel mailingSetup) throws Exception {
-
+    @Override
+    public void run() {
         Algorithms algtthms = new Algorithms();
-        HtmlEmail email = createJHTMLEmail(mailingSetup, recipient);
-        email.setHtmlMsg(algtthms.createHTMLMessage(message, email));
-        email.send();
+        HtmlEmail email = null;
+        try {
+            email = createJHTMLEmail(mailingSetup, recipient);
+        } catch (EmailException ex) {
+        }
+        try {
+            try {
+                email.setHtmlMsg(algtthms.createHTMLMessage(message, email));
+            } catch (MalformedURLException ex) {
+                System.out.println(ex.toString());
+            }
+        } catch (EmailException ex) {
+        }
+        try {
+            email.send();
+        } catch (EmailException ex) {
+            memo.setMesage("\nErr: не удалось\n"
+                    + "отправить письмо "
+                    + "со строки " + (line) + ".\n" + "Т. к. возникли проблемы\n"
+                    + "отправки к серверу\n"
+                    + "перепроверьте логин и пароль,\n"
+                    + "порт и хост, шифрование\n"
+                    + "на панели управления,\n"
+                    + "либо попробуйте разослать\n"
+                    + "неотправленные письма позже.\n"
+                    + "\n" + ex.toString() + "\n");
+        }
     }
 }
