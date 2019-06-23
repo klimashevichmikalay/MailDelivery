@@ -71,7 +71,10 @@ public class Controller {
 
         memo.setMesage("\n\n\n|>Начало рассылки.\n\n");
 
-        Vector<String> msgsTempl = alg.setTemplates(tableHeader, messages, messageSet.getText());
+        Vector<String> msgsTempl = alg.setTemplates(
+                tableHeader, messages,
+                messageSet.getText(),
+                toolspanel.getOptionalColumnVector());
 
         for (int i = 0; i < msgsTempl.size(); i++) {
 
@@ -79,15 +82,21 @@ public class Controller {
 
                 memo.setMesage("Err: не удалось\n"
                         + "отправить письмо "
-                        + "со строки " + (i + 2) + ".\n");
+                        + "со строки " + (i + 2) + ".\n" + "Т. к. введены\n"
+                        + "не все обязательные\n"
+                        + "поля.\n");
                 continue;
             }
-
             String sender = getSender(tableHeader, messages.get(i), toolsbar);
-            if (!"".equals(sender)) {
-
-                mailer.send(msgsTempl.get(i), sender, toolspanel);
+            if ("".equals(sender)) {
+                memo.setMesage("Err: не удалось\n"
+                        + "отправить письмо.\n"
+                        + "Т. к. столбца с именем\n"
+                        + "адресата нет в\n"
+                        + "таблице.");
+                return;
             }
+            mailer.send(msgsTempl.get(i), sender, toolspanel);
         }
     }
 

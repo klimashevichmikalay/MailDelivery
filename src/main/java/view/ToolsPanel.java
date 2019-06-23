@@ -3,6 +3,7 @@ package view;
 import model.Encryption;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.Vector;
 import javax.swing.BorderFactory;
 
 import javax.swing.ButtonGroup;
@@ -23,6 +24,11 @@ import static model.Encryption.TSL;
  * @author Mikalay
  */
 public class ToolsPanel {
+
+    /**
+     * Окно для выбора необязательных полей таблицы
+     */
+    private ComboboxOptionalFields combobox;
 
     /**
      * Тип шифрования, выбираемый в радиобаттон. По умолчанию - SSL.
@@ -111,8 +117,8 @@ public class ToolsPanel {
     public ToolsPanel() {
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        panel.setLayout(new GridLayout(16, 1, 0, 0));
-        TitledBorder border = new TitledBorder("Настройки");
+        panel.setLayout(new GridLayout(12, 1, 0, 0));
+        TitledBorder border = new TitledBorder("Авторизация");
         border.setTitleJustification(TitledBorder.CENTER);
         border.setTitlePosition(TitledBorder.TOP);
         panel.setBorder(border);
@@ -120,6 +126,8 @@ public class ToolsPanel {
         mainpanel = new JPanel();
         mainpanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         mainpanel.setLayout(new GridLayout(2, 1, 0, 0));
+
+        combobox = new ComboboxOptionalFields();
 
 //инструкции       
         JTextArea area = new JTextArea();
@@ -203,14 +211,30 @@ public class ToolsPanel {
         tsl.addActionListener((ActionEvent e) -> {
             encr = TSL;
         });
-        panel.add(new JLabel("Шифрование:"));
+
+        JPanel encrPanel = new JPanel();
+        encrPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        encrPanel.setLayout(new GridLayout(4, 1, 0, 0));
+        TitledBorder border2 = new TitledBorder("Настройки шифрования");
+        border2.setTitleJustification(TitledBorder.CENTER);
+        border2.setTitlePosition(TitledBorder.TOP);
+        encrPanel.setBorder(border2);
+        encrPanel.add(new JLabel("Шифрование:"));
         group.add(none);
         group.add(ssl);
         group.add(tsl);
-        panel.add(none);
-        panel.add(ssl);
-        panel.add(tsl);
+        encrPanel.add(none);
+        encrPanel.add(ssl);
+        encrPanel.add(tsl);
+
         mainpanel.add(panel);
+        mainpanel.add(encrPanel);
+        mainpanel.add(combobox.getPanel());
+    }
+
+    public Vector<String> getOptionalColumnVector() {
+
+        return this.combobox.getStrings();
     }
 
     /**
@@ -246,9 +270,9 @@ public class ToolsPanel {
      * @return тему письма
      */
     public int getPort() {
-        return Integer.parseInt(tport.getText());
+        return Integer.parseInt((tport.getText()).replaceAll("\\s+", ""));
     }
-    
+
     /**
      * Получить порт как строку.
      *
@@ -264,7 +288,7 @@ public class ToolsPanel {
      * @return хост сервера
      */
     public String getHost() {
-        return thost.getText();
+        return (thost.getText().replaceAll("\\s+", ""));
     }
 
     /**
@@ -282,7 +306,7 @@ public class ToolsPanel {
      * @return пароль для авторизации
      */
     public String getPass() {
-        return this.tpass.getText();
+        return (this.tpass.getText().replaceAll("\\s+", ""));
     }
 
     /**
@@ -291,6 +315,6 @@ public class ToolsPanel {
      * @return логин для авторизации
      */
     public String getLogin() {
-        return this.tlogin.getText();
+        return (this.tlogin.getText().replaceAll("\\s+", ""));
     }
 }

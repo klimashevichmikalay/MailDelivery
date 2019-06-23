@@ -42,16 +42,19 @@ public class Algorithms {
      * @param tableHeader заголовок таблицы
      * @param messages значения ячеек строк для формирования писем
      * @param letterText текст письма для отправки
-     * @return  вектор строк-писем с замененными переменными на соответствующие
-     * в строке для каждого письма
+     * @param optionalFields - необязательные для отправки поля, в ячейках могут
+     * отсутствовать. Выбираются пользователем на панели управления
+     * @return вектор строк-писем с замененными переменными на соответствующие в
+     * строке для каждого письма
      */
     public Vector<String> setTemplates(
             MessageInfo tableHeader,
             Vector<MessageInfo> messages,
-            String letterText) {
+            String letterText,
+            Vector<String> optionalFields) {
 
         Vector<String> messagesWithTemplates = new Vector<>();
-        messages.forEach((message) -> messagesWithTemplates.add(replaceAllVar(letterText, tableHeader, message)));
+        messages.forEach((message) -> messagesWithTemplates.add(replaceAllVars(letterText, tableHeader, message, optionalFields)));
 
         return messagesWithTemplates;
     }
@@ -67,15 +70,15 @@ public class Algorithms {
      * @return строка-письмо с замененными переменными на соответствующие в
      * строке для каждого письма
      */
-    private String replaceAllVar(
+    private String replaceAllVars(
             String letterText,
             MessageInfo tableHeader,
-            MessageInfo message) {
+            MessageInfo message,
+            Vector<String> optionalFields) {
 
-        if (!message.isSizeGood()) {
+        if (!checkRequiredFields(message, optionalFields, tableHeader)) {
             return null;
         }
-
         for (int i = 0; i < tableHeader.getSize(); i++) {
             letterText = replaceVarTo(letterText, tableHeader.getAt(i), message.getAt(i));
         }
@@ -154,5 +157,28 @@ public class Algorithms {
         message = "<html>" + message + "</html>";
 
         return message;
+    }
+
+    /**
+     * Проверка нахождения в строке таюлицы всех обязательных полей.
+     *
+     * @param message письмо, в котором происходит замена
+     * @param optionalFields необязательные поля
+     * @param tableHeader заголовок таблицы
+     * @return письмо, в котором шаблоны заменены на текст HTML для вставки
+     * ссылок или файлов
+     */
+    private boolean checkRequiredFields(
+            MessageInfo message,
+            Vector<String> optionalFields,
+            MessageInfo tableHeader) {
+
+        for (int i = 0; i < message.getSize(); i++) {
+            if ("".equals(message.getAt(i)) && !optionalFields.contains(tableHeader.getAt(i))) {
+
+                return false;
+            }
+        }
+        return true;
     }
 }

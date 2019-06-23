@@ -39,16 +39,16 @@ public class XLSXParser {
      * @return итератор на первую строку
      */
     private Iterator<Row> getRowIterator(String path) {
-        
+
         File myFile = new File(path);
         FileInputStream fis = null;
-    
+
         try {
 
             fis = new FileInputStream(myFile);
-        } catch (FileNotFoundException ex) {               
-        }        
-        
+        } catch (FileNotFoundException ex) {
+        }
+
         XSSFWorkbook myWorkBook = null;
         try {
 
@@ -82,6 +82,10 @@ public class XLSXParser {
             Cell cell = cellIterator.next();
             switch (cell.getCellType()) {
 
+                case Cell.CELL_TYPE_BLANK:
+                    mi.setCellValue(count, "");
+                    break;
+
                 case Cell.CELL_TYPE_STRING:
                     mi.setCellValue(count, cell.getStringCellValue());
                     break;
@@ -102,9 +106,9 @@ public class XLSXParser {
      * @throws java.io.IOException исключение при работе с файлом по пути path
      */
     public Vector<MessageInfo> getMessages(String path) throws IOException {
-        
+
         Vector<MessageInfo> messages = new Vector<>(0);
-        Iterator<Row> rowIterator = getRowIterator(path);        
+        Iterator<Row> rowIterator = getRowIterator(path);
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
             MessageInfo mi = getMessageInfo(row);

@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import controller.Controller;
+import java.awt.Font;
+import java.awt.GridLayout;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -63,6 +67,12 @@ public class MainWindow {
      */
     private void initUI() {
 
+        ////
+        Font font = new Font("Verdana", Font.PLAIN, 10);
+        final JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setFont(font);
+
+        ///
         cntrlr = new Controller();
 
         frame = new JFrame("Рассылка почты");
@@ -85,16 +95,25 @@ public class MainWindow {
         });
 
         toolspanel = new ToolsPanel();
-        toolsbar = new ToolsBar();
+        toolsbar = new ToolsBar();       
+
+        //content.add(tabbedPane, BorderLayout.CENTER);
+        JPanel mailPanel = new JPanel();
+        mailPanel.setLayout(new GridLayout(1, 2, 0, 0));
+        mailPanel.add(messageSet.getPanel());
+        mailPanel.add(memo.getPanel());
+        tabbedPane.addTab("Ввод письма", mailPanel);
+
+        JPanel tools = new JPanel();
+        mailPanel.setLayout(new GridLayout(1, 2, 0, 0));       
+        tabbedPane.addTab("Настройки", toolspanel.getPanel());
 
         Container contentPane = frame.getContentPane();
         contentPane.add(toolsbar.getToolbar(), BorderLayout.NORTH);
-        contentPane.add(messageSet.getPanel(), BorderLayout.CENTER);
-        contentPane.add(memo.getPanel(), BorderLayout.EAST);
+        contentPane.add(tabbedPane, BorderLayout.CENTER);
         contentPane.add(send, BorderLayout.SOUTH);
-        contentPane.add(toolspanel.getPanel(), BorderLayout.WEST);
 
-        frame.setSize(800, 720);
+        frame.setSize(800, 600);
         frame.setVisible(true);
     }
 

@@ -65,7 +65,7 @@ public class ToolsBar {
             fileLabel.repaint();
         });
 
-        JLabel mailLabel = new JLabel("Адресат:");
+        JLabel mailLabel = new JLabel("Имя столбца адресатов:");
 
         addressee = new JTextField(8);
         addressee.setText("");
