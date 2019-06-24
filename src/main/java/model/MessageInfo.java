@@ -15,6 +15,11 @@ import log.MyLog;
 public class MessageInfo {
 
     /**
+     * Заголовок таблицы.
+     */
+    public static MessageInfo header;
+
+    /**
      * Содержит все значения ячеек данной строки. Ключ - номер столбца, значение
      * - это значение ячейки строки этого стобца.
      */
@@ -85,6 +90,7 @@ public class MessageInfo {
      * заголовка).
      *
      * @return истина, если есть дубликаты, ложь - если их нет
+     * @throws java.io.IOException
      */
     public boolean isHasDublicate() throws IOException {
 
@@ -105,7 +111,7 @@ public class MessageInfo {
 
     public boolean isSizeGood() {
 
-        return row.size() == parser.header.row.size();
+        return row.size() == MessageInfo.header.row.size();
     }
 
     /**

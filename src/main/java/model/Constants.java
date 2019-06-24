@@ -8,6 +8,11 @@ package model;
 public class Constants {
 
     /**
+     * Путь к папке с шаблонами писем.
+     */
+    public static final String TEMPLATES_DIR = "templates";
+
+    /**
      * Путь к файлам с лог-файлом лога.
      */
     public static final String LOG_FILE_PATH = "log/log";

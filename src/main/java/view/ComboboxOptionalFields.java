@@ -22,14 +22,14 @@ public class ComboboxOptionalFields {
     }
 
     private void createGui() {
-        JButton button = new JButton("Очистить список");
-        button.addActionListener((ActionEvent e) -> {
+        JButton buttonClean = new JButton("Очистить список");
+        buttonClean.addActionListener((ActionEvent e) -> {
             javax.swing.SwingUtilities.invokeLater(() -> {
                 comboBox.removeAllItems();
             });
         });
-        JButton button1 = new JButton("Добавить");
-        button1.addActionListener((ActionEvent e) -> {
+        JButton buttonAdd = new JButton("Добавить");
+        buttonAdd.addActionListener((ActionEvent e) -> {
             appendCbItem(textfField.getText());
             textfField.setText("");
         });
@@ -44,8 +44,8 @@ public class ComboboxOptionalFields {
         panel.setLayout(new GridLayout(4, 1));
         panel.add(comboBox);
         panel.add(textfField);
-        panel.add(button1);
-        panel.add(button);
+        panel.add(buttonAdd);
+        panel.add(buttonClean);
         panel.setVisible(true);
     }
 

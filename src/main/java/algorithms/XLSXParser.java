@@ -28,11 +28,6 @@ public class XLSXParser {
     private boolean flagHeader = false;
 
     /**
-     * Заголовок таблицы.
-     */
-    public static MessageInfo header;
-
-    /**
      * Возвращает итератор для просмотра строк таблицы.
      *
      * @param path - путь файла для рассылки
@@ -105,7 +100,6 @@ public class XLSXParser {
                     }
                 }
                 break;
-
                 default:
             }
 
@@ -130,7 +124,7 @@ public class XLSXParser {
             Row row = rowIterator.next();
             MessageInfo mi = getMessageInfo(row);
             if (!flagHeader) {
-                header = mi;
+                MessageInfo.header = mi;
                 flagHeader = true;
                 continue;
             }

@@ -17,6 +17,8 @@ import javax.swing.JTabbedPane;
  */
 public class MainWindow {
 
+    private MailsTemplatesCombobox mtc;
+
     /**
      * Главное окно интерфейса.
      */
@@ -81,6 +83,8 @@ public class MainWindow {
         messageSet = new WorkingArea("Поле ввода письма", true);
         memo = new WorkingArea("События", false);
 
+        mtc = new MailsTemplatesCombobox(messageSet);
+
         send = new JButton("Разослать");
         send.addActionListener((ActionEvent e) -> {
             try {
@@ -97,14 +101,12 @@ public class MainWindow {
         toolspanel = new ToolsPanel();
         toolsbar = new ToolsBar();
 
-        //content.add(tabbedPane, BorderLayout.CENTER);
         JPanel mailPanel = new JPanel();
-        mailPanel.setLayout(new GridLayout(1, 2, 0, 0));
-        mailPanel.add(messageSet.getPanel());
-        mailPanel.add(memo.getPanel());
+        mailPanel.add(mtc.getPanel(), BorderLayout.WEST);
+        mailPanel.add(messageSet.getPanel(), BorderLayout.CENTER);
+        mailPanel.add(memo.getPanel(), BorderLayout.EAST);
         tabbedPane.addTab("Ввод письма", mailPanel);
 
-        JPanel tools = new JPanel();
         mailPanel.setLayout(new GridLayout(1, 2, 0, 0));
         tabbedPane.addTab("Настройки", toolspanel.getPanel());
 

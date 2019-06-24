@@ -56,7 +56,7 @@ public class Controller {
         file = file.replace("\\", "\\\\");
 
         Vector<MessageInfo> messages = pars.getMessages(file);
-        MessageInfo tableHeader = XLSXParser.header;
+        MessageInfo tableHeader = MessageInfo.header;
 
         if (!checkAllFields(
                 memo,
@@ -85,6 +85,7 @@ public class Controller {
                         + "поля.\n");
                 continue;
             }
+
             String sender = getSender(tableHeader, messages.get(i), toolsbar);
             if ("".equals(sender)) {
                 memo.setMesage("Err: не будет\n"

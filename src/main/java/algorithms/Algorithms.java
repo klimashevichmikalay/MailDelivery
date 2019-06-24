@@ -101,6 +101,16 @@ public class Algorithms {
 
         Pattern pattern = Pattern.compile(START_VAR_REGEX + var + END_VAR_REGEX);
         Matcher m = pattern.matcher(text);
+        //костыль, т.к. программа не умеет склонять, нужно в склонении писать в таблице
+        if ("Специалист".equals(replaceTo)) {
+            return (m.replaceAll("Специалиста"));
+        }
+
+        if ("специалист".equals(replaceTo)) {
+            return (m.replaceAll("специалиста"));
+        }
+        //желательно это убрать для универсальности
+        ///////
         return (m.replaceAll(replaceTo));
     }
 

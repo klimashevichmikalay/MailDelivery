@@ -87,6 +87,11 @@ public class WorkingArea {
         return area.getText();
     }
 
+    public void setText(String text) {
+        area.setText(text);
+        area.repaint();
+    }
+
     /**
      * Возвращает панель с компонентами.
      *
